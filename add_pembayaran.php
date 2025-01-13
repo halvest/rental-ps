@@ -20,29 +20,40 @@
 
             // Fungsi untuk menghitung jumlah bayar dan denda
             function hitungPembayaran($conn, $id_transaksi, $tanggal_bayar) {
-                $denda_per_hari = 5000;
+                $denda_per_hari = 5000; // Nominal denda per hari keterlambatan
+                $data = ['total_bayar' => 0, 'denda' => 0]; // Inisialisasi hasil perhitungan
+            
+                // Query untuk mengambil data transaksi, durasi sewa, dan keterlambatan
                 $sql_hitung = "
-                    SELECT ps.harga_sewa, 
-                           DATEDIFF(t.tanggal_kembali, t.tanggal_sewa) AS durasi_sewa, 
-                           GREATEST(DATEDIFF('$tanggal_bayar', t.tanggal_kembali), 0) AS keterlambatan,
-                           (DATEDIFF(t.tanggal_kembali, t.tanggal_sewa) * ps.harga_sewa) + 
-                           (GREATEST(DATEDIFF('$tanggal_bayar', t.tanggal_kembali), 0) * $denda_per_hari) AS total_bayar
+                    SELECT 
+                        ps.harga_sewa, 
+                        DATEDIFF(t.tanggal_kembali, t.tanggal_sewa) AS durasi_sewa, 
+                        DATEDIFF('$tanggal_bayar', t.tanggal_kembali) AS keterlambatan,
+                        dt.jumlah_item
                     FROM transaksi t 
                     JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi
                     JOIN playstation ps ON dt.id_playstation = ps.id_playstation
                     WHERE t.id_transaksi = '$id_transaksi'
                 ";
+            
                 $result = $conn->query($sql_hitung);
-                $data = ['total_bayar' => 0, 'denda' => 0];
-
+            
                 if ($result && $result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $data['total_bayar'] += $row['total_bayar'];
-                        $data['denda'] += $row['keterlambatan'] * $denda_per_hari;
+                        $durasi_sewa = max(0, $row['durasi_sewa']); // Pastikan durasi sewa tidak negatif
+                        $harga_total = $durasi_sewa * $row['harga_sewa'] * $row['jumlah_item']; // Hitung total harga sewa
+            
+                        $keterlambatan = max(0, $row['keterlambatan']); // Pastikan keterlambatan tidak negatif
+                        $denda = $keterlambatan * $denda_per_hari; // Hitung total denda
+            
+                        $data['total_bayar'] += $harga_total + $denda;
+                        $data['denda'] += $denda;
                     }
                 }
-                return $data;
+            
+                return $data; // Kembalikan hasil total bayar dan denda
             }
+            
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $id_transaksi = $_POST['id_transaksi'];

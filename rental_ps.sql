@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2025 at 03:21 PM
+-- Generation Time: Jan 13, 2025 at 09:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -34,6 +34,13 @@ CREATE TABLE `admin` (
   `password` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `nama`, `username`, `password`) VALUES
+(1, 'Hasyim', 'admin', 'admin');
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +54,24 @@ CREATE TABLE `detail_transaksi` (
   `jumlah_item` int(11) DEFAULT NULL,
   `harga_sewa` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detail_transaksi`
+--
+
+INSERT INTO `detail_transaksi` (`id_dt`, `id_transaksi`, `id_playstation`, `jumlah_item`, `harga_sewa`) VALUES
+(41, 20, 3, 1, 100000.00),
+(42, 21, 2, 1, 70000.00),
+(43, 21, 4, 2, 30000.00),
+(44, 22, 3, 2, 100000.00),
+(45, 23, 4, 1, 30000.00),
+(46, 23, 8, 2, 25000.00),
+(47, 24, 9, 1, 90000.00),
+(48, 25, 9, 1, 90000.00),
+(49, 26, 4, 1, 30000.00),
+(50, 27, 2, 1, 70000.00),
+(51, 28, 1, 2, 50000.00),
+(52, 29, 4, 2, 30000.00);
 
 -- --------------------------------------------------------
 
@@ -67,7 +92,16 @@ CREATE TABLE `pelanggan` (
 --
 
 INSERT INTO `pelanggan` (`id_pelanggan`, `nama`, `alamat`, `email`, `no_telepon`) VALUES
-(1, 'yudd', 'moyudan', 'yudhasptraa00@gmail.com', '08000000000');
+(6, 'Hasyim', 'Sleman', 'hasyimdani@gmail.com', '08954030075'),
+(7, 'Steven', 'Minggir', 'venn@gmail.com', '08932478372'),
+(8, 'Yudha', 'Godean', 'yudha@gmail.com', '08924728642'),
+(9, 'Fairul', 'Concat', 'fairul@gmail.com', '08973846833'),
+(10, 'Rehan', 'Godean', 'rehan@gmail.com', '08973826423'),
+(11, 'Syaiful', 'Gamping', 'syaiful@gmail.com', '08976349893'),
+(12, 'Akram', 'Seyegan', 'akram@gmail.com', '08319384623'),
+(13, 'Hanif', 'Sleman', 'hanif@gmail.com', '08932938294'),
+(14, 'Wikan', 'Senturan', 'wikan@gmail.com', '0893278263'),
+(15, 'Dimas', 'Seyegan', 'dimss@gmail.com', '08931972842');
 
 -- --------------------------------------------------------
 
@@ -82,6 +116,20 @@ CREATE TABLE `pembayaran` (
   `metode_bayar` varchar(20) DEFAULT NULL,
   `jumlah_bayar` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_transaksi`, `tanggal_bayar`, `metode_bayar`, `jumlah_bayar`) VALUES
+(13, 20, '2025-01-03', 'Transfer', 200000.00),
+(14, 21, '2025-01-03', 'Cash', 130000.00),
+(15, 22, '2025-01-05', 'E-Wallet', 200000.00),
+(16, 23, '2025-01-15', 'Transfer', 160000.00),
+(17, 26, '2025-01-13', 'Cash', 150000.00),
+(18, 27, '2025-01-05', 'Cash', 215000.00),
+(19, 28, '2025-01-10', 'Cash', 900000.00),
+(20, 29, '2025-01-13', 'Transfer', 305000.00);
 
 -- --------------------------------------------------------
 
@@ -124,6 +172,22 @@ CREATE TABLE `transaksi` (
   `tanggal_kembali` date DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `id_pelanggan`, `tanggal_sewa`, `tanggal_kembali`, `status`) VALUES
+(20, 6, '2025-01-01', '2025-01-03', 'Lunas'),
+(21, 7, '2025-01-02', '2025-01-03', 'Lunas'),
+(22, 8, '2025-01-04', '2025-01-05', 'Lunas'),
+(23, 9, '2025-01-13', '2025-01-15', 'Lunas'),
+(24, 10, '2025-01-13', '2025-01-20', 'Proses'),
+(25, 11, '2025-01-01', '2025-01-13', 'Proses'),
+(26, 12, '2025-01-08', '2025-01-13', 'Lunas'),
+(27, 13, '2025-01-01', '2025-01-04', 'Lunas'),
+(28, 14, '2025-01-01', '2025-01-10', 'Lunas'),
+(29, 15, '2025-01-07', '2025-01-12', 'Lunas');
 
 --
 -- Indexes for dumped tables
@@ -177,25 +241,25 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_dt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_dt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `playstation`
@@ -207,7 +271,7 @@ ALTER TABLE `playstation`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Constraints for dumped tables

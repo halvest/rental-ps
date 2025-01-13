@@ -1,0 +1,67 @@
+-- 1. Pembuatan Database
+CREATE DATABASE Rental_PS;
+USE Rental_PS;
+
+-- 2. Pembuatan Tabel
+CREATE TABLE Admin (
+    id_admin INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(50),
+    username VARCHAR(50),
+    password VARCHAR(50)
+);
+
+CREATE TABLE Pelanggan (
+    id_pelanggan INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(50),
+    alamat VARCHAR(100),
+    email VARCHAR(50),
+    no_telepon INT(15)
+);
+
+CREATE TABLE Playstation (
+    id_playstation INT PRIMARY KEY AUTO_INCREMENT,
+    kategori VARCHAR(50),
+    harga_sewa DECIMAL(10, 2)
+);
+
+CREATE TABLE Transaksi (
+    id_transaksi INT PRIMARY KEY AUTO_INCREMENT,
+    id_pelanggan INT,
+    id_playstation INT,
+    tanggal_sewa DATE,
+    tanggal_kembali DATE,
+    status VARCHAR(20),
+    FOREIGN KEY (id_pelanggan) REFERENCES Pelanggan(id_pelanggan),
+    FOREIGN KEY (id_playstation) REFERENCES Playstation(id_playstation)
+);
+
+CREATE TABLE Pembayaran (
+    id_pembayaran INT PRIMARY KEY AUTO_INCREMENT,
+    id_transaksi INT,
+    tanggal_bayar DATE,
+    metode_bayar VARCHAR(20),
+    jumlah_bayar DECIMAL(10, 2),
+    FOREIGN KEY (id_transaksi) REFERENCES Transaksi(id_transaksi)
+);
+
+CREATE TABLE detail_transaksi (
+    id_dt INT(11) AUTO_INCREMENT PRIMARY KEY,
+    id_transaksi INT(11) NULL,
+    id_playstation INT(11) NULL,
+    jumlah_item INT(11) NULL,
+    harga_sewa DECIMAL(10,2) NULL
+);
+
+
+INSERT INTO Playstation (kategori, harga_sewa) VALUES
+('PS4', 50000.00),
+('PS4 Pro', 70000.00),
+('PS5', 100000.00),
+('PS3', 30000.00),
+('PS2', 20000.00),
+('PS1', 15000.00),
+('PS Vita', 40000.00),
+('PSP', 25000.00),
+('PS5 Digital', 90000.00),
+('PS Classic', 10000.00);
+

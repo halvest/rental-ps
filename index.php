@@ -79,19 +79,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Chart -->
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">Grafik Transaksi</div>
-                        <div class="card-body">
-                            <canvas id="transaksiChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Table Data -->
             <div class="row mt-4">
                 <div class="col-md-12">
@@ -139,40 +126,6 @@
     <div class="footer mt-5">
         <p>&copy; 2025 Rental PS. All Rights Reserved.</p>
     </div>
-
-    <!-- Chart Script -->
-    <script>
-        const ctx = document.getElementById('transaksiChart').getContext('2d');
-        const transaksiChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['PS1', 'PS2', 'PS3', 'PS4', 'PS5'],
-                datasets: [{
-                    label: 'Jumlah Transaksi',
-                    data: [12, 19, 3, 5, 2], // Data dummy
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' }
-                }
-            }
-        });
-
-        // Fetch chart data from API
-        fetch('api/transaksi_chart_data.php')
-            .then(response => response.json())
-            .then(data => {
-                transaksiChart.data.datasets[0].data = data.transaksi_counts || [12, 19, 3, 5, 2];
-                transaksiChart.update();
-            })
-            .catch(error => console.error('Error fetching chart data:', error));
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
 </body>
